@@ -1,5 +1,6 @@
 package com.aitbol.expensetracker.model.dto;
 
+import com.aitbol.expensetracker.model.entity.Expense;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Timestamp;
@@ -18,6 +19,13 @@ public class ExpenseDto {
         this.description = description;
         this.amount = amount;
         this.date = date;
+    }
+
+    public ExpenseDto(Expense expense){
+        this.name = expense.getName();
+        this.description = expense.getDescription();
+        this.amount = expense.getAmount();
+        this.date = expense.getDate();
     }
 
     @JsonProperty("name")
