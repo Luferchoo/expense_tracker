@@ -1,5 +1,4 @@
 package com.aitbol.expensetracker.controller;
-
 import com.aitbol.expensetracker.model.dto.UserDto;
 import com.aitbol.expensetracker.service.UserService;
 import org.springframework.web.bind.annotation.*;

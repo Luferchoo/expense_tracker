@@ -1,28 +1,31 @@
 package com.aitbol.expensetracker.model.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Table(name = "expense", schema = "public")
 public class Expense {
     public Expense(){
 
     }
-    public Expense(String name, String description, double amount, Timestamp date) {
+    public Expense(String name, String description, double amount, Date timestamp) {
         this.name = name;
         this.description = description;
         this.amount = amount;
-        this.date = date;
+        this.timestamp = timestamp;
     }
 
     @Id
     private String name;
     private String description;
     private double amount;
-    private Timestamp date;
+    private Date timestamp;
 
     public String getName() {
         return name;
@@ -48,12 +51,12 @@ public class Expense {
         this.amount = amount;
     }
 
-    public Timestamp getDate() {
-        return date;
+    public Date getDate() {
+        return timestamp;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
+    public void setDate(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override

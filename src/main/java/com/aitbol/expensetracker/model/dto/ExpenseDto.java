@@ -4,28 +4,29 @@ import com.aitbol.expensetracker.model.entity.Expense;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class ExpenseDto {
     private String name;
     private String description;
     private double amount;
-    private Timestamp date;
+    private Date timestamp;
 
     public ExpenseDto() {
 
     }
-    public ExpenseDto(String name, String description, double amount, Timestamp date) {
+    public ExpenseDto(String name, String description, double amount, Date timestamp) {
         this.name = name;
         this.description = description;
         this.amount = amount;
-        this.date = date;
+        this.timestamp = timestamp;
     }
 
     public ExpenseDto(Expense expense){
         this.name = expense.getName();
         this.description = expense.getDescription();
         this.amount = expense.getAmount();
-        this.date = expense.getDate();
+        this.timestamp = expense.getDate();
     }
 
     @JsonProperty("name")
@@ -52,12 +53,12 @@ public class ExpenseDto {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-    @JsonProperty("date")
-    public Timestamp getDate() {
-        return date;
+    @JsonProperty("timestamp")
+    public Date getDate() {
+        return timestamp;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
+    public void setDate(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }
