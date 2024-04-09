@@ -5,6 +5,8 @@ import com.aitbol.expensetracker.model.entity.Expense;
 import com.aitbol.expensetracker.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -21,6 +23,16 @@ public class ExpenseService {
         } else {
             return null;
         }
+    }
+    public Collection<ExpenseDto> findAll(){
+        Collection<Expense> collection = this.expenseRepository.findAll();
+        Collection<ExpenseDto> expenseDtos = new ArrayList<>();
+
+        for (Expense expense : collection) {
+            expenseDtos.add(new ExpenseDto(expense));
+        }
+
+        return expenseDtos;
     }
 
 }

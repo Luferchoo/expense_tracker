@@ -1,6 +1,7 @@
 package com.aitbol.expensetracker.repository;
 
 import com.aitbol.expensetracker.model.entity.Expense;
+import com.aitbol.expensetracker.model.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,4 +12,6 @@ public interface ExpenseRepository extends CrudRepository<Expense,String> {
     //Collection<Expense> findAll();
     @Query("SELECT e from Expense e where e.name=:name")
     Optional<Expense> findByName(String name);
+    Collection<Expense> findAll();
+
 }
