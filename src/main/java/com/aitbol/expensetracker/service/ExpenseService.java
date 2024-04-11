@@ -3,6 +3,7 @@ package com.aitbol.expensetracker.service;
 import com.aitbol.expensetracker.model.dto.ExpenseDto;
 import com.aitbol.expensetracker.model.entity.Expense;
 import com.aitbol.expensetracker.repository.ExpenseRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,4 +36,16 @@ public class ExpenseService {
         return expenseDtos;
     }
 
+    @Transactional
+    public ExpenseDto update(String name, Expense expense) {
+        Optional<Expense> optional = this.expenseRepository.findByName(name);
+        if (optional.isPresent()) {
+            Expense existingExpense = optional.get();
+            existingExpense.setDescription(expense.getDescription());
+            Expense updatedExpense = this.expenseRepository.save(existingExpense);
+            return new ExpenseDto(updatedExpense);
+        } else {
+            return null;
+        }
+    }
 }

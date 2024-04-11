@@ -2,8 +2,6 @@ package com.aitbol.expensetracker.model.dto;
 
 import com.aitbol.expensetracker.model.entity.Expense;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class ExpenseDto {
