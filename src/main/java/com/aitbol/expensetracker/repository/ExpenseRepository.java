@@ -14,7 +14,7 @@ public interface ExpenseRepository extends CrudRepository<Expense,String> {
 
     Collection<Expense> findAll();
 
-    Expense save(Expense expense );
+    Expense save(Expense expense);
 
 
 }

@@ -4,8 +4,10 @@ import com.aitbol.expensetracker.model.dto.ExpenseDto;
 import com.aitbol.expensetracker.model.entity.Expense;
 import com.aitbol.expensetracker.repository.ExpenseRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
-
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -36,7 +38,14 @@ public class ExpenseService {
         return expenseDtos;
     }
 
-    @Transactional
+    public ExpenseDto post(Expense expense) {
+        if (expense.getDate() == null) {
+            expense.setDate(new Date());
+        }
+        Expense updatedExpense = this.expenseRepository.save(expense);
+        return new ExpenseDto(updatedExpense);
+    }
+
     public ExpenseDto update(String name, Expense expense) {
         Optional<Expense> optional = this.expenseRepository.findByName(name);
         if (optional.isPresent()) {

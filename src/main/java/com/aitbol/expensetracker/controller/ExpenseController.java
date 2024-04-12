@@ -27,11 +27,13 @@ public class ExpenseController {
         return expenseService.findAll();
     }
 
+    @PutMapping("expensepost/")
+    public ExpenseDto postExpense(@RequestBody Expense expense) {
+        return expenseService.post(expense);
+    }
+
     @PutMapping("expenseupdate/{name}")
     public ExpenseDto updateExpense(@PathVariable String name, @RequestBody Expense expense) {
-        System.out.println(expense);
-        System.out.println(name);
-
         return expenseService.update(name, expense);
     }
 }
