@@ -27,7 +27,7 @@ public class ExpenseController {
         return expenseService.findAll();
     }
 
-    @PutMapping("expensepost/")
+    @PostMapping("expensepost/")
     public ExpenseDto postExpense(@RequestBody Expense expense) {
         return expenseService.post(expense);
     }
@@ -35,5 +35,10 @@ public class ExpenseController {
     @PutMapping("expenseupdate/{name}")
     public ExpenseDto updateExpense(@PathVariable String name, @RequestBody Expense expense) {
         return expenseService.update(name, expense);
+    }
+
+    @DeleteMapping("/expenses/{name}")
+    public ExpenseDto deleteExpense(@PathVariable String name) {
+        return expenseService.delete(name);
     }
 }

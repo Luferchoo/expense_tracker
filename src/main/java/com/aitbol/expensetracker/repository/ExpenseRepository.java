@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ExpenseRepository extends CrudRepository<Expense,String> {
-    //Collection<Expense> findAll();
+
     @Query("SELECT e from Expense e where e.name=:name")
     Optional<Expense> findByName(String name);
 
@@ -16,5 +16,5 @@ public interface ExpenseRepository extends CrudRepository<Expense,String> {
 
     Expense save(Expense expense);
 
-
+    void deleteByName(String name);
 }
