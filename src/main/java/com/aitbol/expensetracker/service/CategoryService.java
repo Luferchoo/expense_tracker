@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,10 @@ public class CategoryService {
         }
 
         return categoryDtos;
+    }
+
+    public CategoryDto post(Category category) {
+        Category updatedCategory = this.categoryRepository.save(category);
+        return new CategoryDto(updatedCategory);
     }
 }
