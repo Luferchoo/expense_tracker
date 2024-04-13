@@ -38,4 +38,9 @@ public class CategoryController {
     public CategoryDto updateCategory(@PathVariable String name, @RequestBody Category category) {
         return categoryService.update(name, category);
     }
+
+    @DeleteMapping("/category/{name}")
+    public CategoryDto deleteExpense(@PathVariable String name) {
+        return categoryService.delete(name);
+    }
 }

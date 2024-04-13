@@ -57,4 +57,15 @@ public class CategoryService {
         }
     }
 
+    @Transactional
+    public CategoryDto delete(String name) {
+        Optional<Category> optional = this.categoryRepository.findByName(name);
+        if (optional.isPresent()) {
+            Category deletedCategory = optional.get();
+            this.categoryRepository.deleteByName(name);
+            return new CategoryDto(deletedCategory);
+        } else {
+            return null;
+        }
+    }
 }
