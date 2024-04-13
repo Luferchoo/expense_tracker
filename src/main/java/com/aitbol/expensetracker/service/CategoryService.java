@@ -5,6 +5,7 @@ import com.aitbol.expensetracker.model.dto.ExpenseDto;
 import com.aitbol.expensetracker.model.entity.Category;
 import com.aitbol.expensetracker.model.entity.Expense;
 import com.aitbol.expensetracker.repository.CategoryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,4 +44,17 @@ public class CategoryService {
         Category updatedCategory = this.categoryRepository.save(category);
         return new CategoryDto(updatedCategory);
     }
+
+    public CategoryDto update(String name, Category category) {
+        Optional<Category> optional = this.categoryRepository.findByName(name);
+        if (optional.isPresent()) {
+            Category existingCategory = optional.get();
+            existingCategory.setDescription(category.getDescription());
+            Category updatedCategory = this.categoryRepository.save(existingCategory);
+            return new CategoryDto(updatedCategory);
+        } else {
+            return null;
+        }
+    }
+
 }

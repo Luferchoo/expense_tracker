@@ -13,4 +13,5 @@ public interface CategoryRepository extends CrudRepository<Category, String> {
     Collection<Category> findAll();
 
     Category save(Category category);
+
 }

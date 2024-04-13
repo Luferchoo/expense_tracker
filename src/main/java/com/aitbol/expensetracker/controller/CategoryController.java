@@ -33,4 +33,9 @@ public class CategoryController {
     public CategoryDto postCategory(@RequestBody Category category) {
         return categoryService.post(category);
     }
+
+    @PutMapping("categoryUpdate/{name}")
+    public CategoryDto updateCategory(@PathVariable String name, @RequestBody Category category) {
+        return categoryService.update(name, category);
+    }
 }
