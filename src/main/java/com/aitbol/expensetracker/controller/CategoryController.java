@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
+
 @RestController
 @RequestMapping("/")
 public class CategoryController {
@@ -17,8 +19,13 @@ public class CategoryController {
     CategoryController(CategoryService service) {
         this.categoryService = service;
     }
+
     @RequestMapping(method = RequestMethod.GET, value = "category/{name}", produces = { "application/json" })
     public CategoryDto getCategory(@PathVariable("name") String name){
         return categoryService.findByName(name);
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "category/all", produces = { "application/json" })
+    public Collection<CategoryDto> getAllCategories(){
+        return categoryService.findAll();
     }
 }
