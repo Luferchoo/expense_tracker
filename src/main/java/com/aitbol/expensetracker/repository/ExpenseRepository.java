@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface ExpenseRepository extends CrudRepository<Expense,String> {
 
-    @Query("SELECT e from Expense e where e.name=:name")
+    Optional<Expense> findById(Long id);
+
     Optional<Expense> findByName(String name);
 
     Collection<Expense> findAll();

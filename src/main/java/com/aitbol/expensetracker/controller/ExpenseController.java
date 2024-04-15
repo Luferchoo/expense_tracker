@@ -17,9 +17,9 @@ public class ExpenseController {
     ExpenseController(ExpenseService service){
         this.expenseService = service;
     }
-    @RequestMapping(method = RequestMethod.GET, value = "expense/{name}", produces = { "application/json" })
-    public ExpenseDto getExpense(@PathVariable("name") String name){
-        return expenseService.findByName(name);
+    @RequestMapping(method = RequestMethod.GET, value = "expense/{id}", produces = { "application/json" })
+    public ExpenseDto getExpense(@PathVariable("id") Long id){
+        return expenseService.findById(id);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "expense/all", produces = { "application/json" })

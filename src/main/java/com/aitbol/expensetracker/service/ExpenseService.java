@@ -19,8 +19,9 @@ public class ExpenseService {
         this.expenseRepository = expenseRepository;
     }
 
-    public ExpenseDto findByName(String name){
-        Optional<Expense> optional = this.expenseRepository.findByName(name);
+
+    public ExpenseDto findById(Long id){
+        Optional<Expense> optional = this.expenseRepository.findById(id);
         if (optional.isPresent()) {
             return new ExpenseDto(optional.get());
         } else {
