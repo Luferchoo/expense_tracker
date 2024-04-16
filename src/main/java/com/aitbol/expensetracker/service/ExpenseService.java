@@ -60,11 +60,11 @@ public class ExpenseService {
     }
 
     @Transactional
-    public ExpenseDto delete(String name) {
-        Optional<Expense> optional = this.expenseRepository.findByName(name);
+    public ExpenseDto delete(Long id) {
+        Optional<Expense> optional = this.expenseRepository.findById(id);
         if (optional.isPresent()) {
             Expense deletedExpense = optional.get();
-            this.expenseRepository.deleteByName(name);
+            this.expenseRepository.deleteById(id);
             return new ExpenseDto(deletedExpense);
         } else {
             return null;

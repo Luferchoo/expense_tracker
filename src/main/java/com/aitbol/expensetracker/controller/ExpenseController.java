@@ -37,8 +37,8 @@ public class ExpenseController {
         return expenseService.update(name, expense);
     }
 
-    @DeleteMapping("/expenses/{name}")
-    public ExpenseDto deleteExpense(@PathVariable String name) {
-        return expenseService.delete(name);
+    @DeleteMapping("/expenses/{id}")
+    public ExpenseDto deleteExpense(@PathVariable Long id) {
+        return expenseService.delete(id);
     }
 }
