@@ -47,11 +47,13 @@ public class ExpenseService {
         return new ExpenseDto(updatedExpense);
     }
 
-    public ExpenseDto update(String name, Expense expense) {
-        Optional<Expense> optional = this.expenseRepository.findByName(name);
+    public ExpenseDto update(Long id, ExpenseDto expense) {
+        Optional<Expense> optional = this.expenseRepository.findById(id);
         if (optional.isPresent()) {
             Expense existingExpense = optional.get();
+            existingExpense.setName(expense.getName());
             existingExpense.setDescription(expense.getDescription());
+            existingExpense.setAmount(expense.getAmount());
             Expense updatedExpense = this.expenseRepository.save(existingExpense);
             return new ExpenseDto(updatedExpense);
         } else {

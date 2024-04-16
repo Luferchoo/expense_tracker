@@ -32,9 +32,9 @@ public class ExpenseController {
         return expenseService.post(expense);
     }
 
-    @PutMapping("expenseupdate/{name}")
-    public ExpenseDto updateExpense(@PathVariable String name, @RequestBody Expense expense) {
-        return expenseService.update(name, expense);
+    @PutMapping("expenseupdate/{id}")
+    public ExpenseDto updateExpense(@PathVariable Long id, @RequestBody ExpenseDto expense) {
+        return expenseService.update(id, expense);
     }
 
     @DeleteMapping("/expenses/{id}")
