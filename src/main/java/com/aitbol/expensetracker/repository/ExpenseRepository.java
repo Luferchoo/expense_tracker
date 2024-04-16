@@ -11,8 +11,6 @@ public interface ExpenseRepository extends CrudRepository<Expense,String> {
 
     Optional<Expense> findById(Long id);
 
-    Optional<Expense> findByName(String name);
-
     Collection<Expense> findAll();
 
     Expense save(Expense expense);
