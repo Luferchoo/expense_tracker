@@ -28,14 +28,6 @@ public class CategoryService {
         }
     }
 
-    public CategoryDto findByName(String name){
-        Optional<Category> optional = this.categoryRepository.findByName(name);
-        if (optional.isPresent()) {
-            return new CategoryDto(optional.get());
-        } else {
-            return null;
-        }
-    }
 
     public Collection<CategoryDto> findAll(){
         Collection<Category> collection = this.categoryRepository.findAll();
