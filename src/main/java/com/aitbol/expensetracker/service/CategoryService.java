@@ -53,8 +53,8 @@ public class CategoryService {
         return new CategoryDto(updatedCategory);
     }
 
-    public CategoryDto update(String name, Category category) {
-        Optional<Category> optional = this.categoryRepository.findByName(name);
+    public CategoryDto update(Long id, CategoryDto category) {
+        Optional<Category> optional = this.categoryRepository.findById(id);
         if (optional.isPresent()) {
             Category existingCategory = optional.get();
             existingCategory.setDescription(category.getDescription());
