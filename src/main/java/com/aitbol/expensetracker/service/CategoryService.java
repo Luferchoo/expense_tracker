@@ -66,11 +66,11 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryDto delete(String name) {
-        Optional<Category> optional = this.categoryRepository.findByName(name);
+    public CategoryDto delete(Long id) {
+        Optional<Category> optional = this.categoryRepository.findById(id);
         if (optional.isPresent()) {
             Category deletedCategory = optional.get();
-            this.categoryRepository.deleteByName(name);
+            this.categoryRepository.deleteById(id);
             return new CategoryDto(deletedCategory);
         } else {
             return null;

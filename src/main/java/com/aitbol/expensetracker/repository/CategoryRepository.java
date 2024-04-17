@@ -16,5 +16,5 @@ public interface CategoryRepository extends CrudRepository<Category, String> {
 
     Category save(Category category);
 
-    void deleteByName(String name);
+    void deleteById(Long id);
 }

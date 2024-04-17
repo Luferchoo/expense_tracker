@@ -39,8 +39,8 @@ public class CategoryController {
         return categoryService.update(id, category);
     }
 
-    @DeleteMapping("/category/{name}")
-    public CategoryDto deleteExpense(@PathVariable String name) {
-        return categoryService.delete(name);
+    @DeleteMapping("/category/{id}")
+    public CategoryDto deleteExpense(@PathVariable Long id) {
+        return categoryService.delete(id);
     }
 }
