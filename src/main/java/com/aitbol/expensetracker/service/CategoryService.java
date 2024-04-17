@@ -19,6 +19,14 @@ public class CategoryService {
     CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+    public CategoryDto findById(Long id){
+        Optional<Category> optional = this.categoryRepository.findById(id);
+        if (optional.isPresent()) {
+            return new CategoryDto(optional.get());
+        } else {
+            return null;
+        }
+    }
 
     public CategoryDto findByName(String name){
         Optional<Category> optional = this.categoryRepository.findByName(name);

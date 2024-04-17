@@ -19,9 +19,9 @@ public class CategoryController {
         this.categoryService = service;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "category/{name}", produces = { "application/json" })
-    public CategoryDto getCategory(@PathVariable("name") String name){
-        return categoryService.findByName(name);
+    @RequestMapping(method = RequestMethod.GET, value = "category/{id}", produces = { "application/json" })
+    public CategoryDto getCategory(@PathVariable("id") Long id){
+        return categoryService.findById(id);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "category/all", produces = { "application/json" })
