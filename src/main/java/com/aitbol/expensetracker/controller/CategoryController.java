@@ -35,8 +35,8 @@ public class CategoryController {
     }
 
     @PutMapping("categoryUpdate/{id}")
-    public CategoryDto updateCategory(@PathVariable Long id, @RequestBody CategoryDto category) {
-        return categoryService.update(id, category);
+    public CategoryDto updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+        return categoryService.update(id, categoryDto);
     }
 
     @DeleteMapping("/category/{id}")

@@ -46,11 +46,12 @@ public class CategoryService {
         return new CategoryDto(updatedCategory);
     }
 
-    public CategoryDto update(Long id, CategoryDto category) {
+    public CategoryDto update(Long id, CategoryDto categoryDto) {
         Optional<Category> optional = this.categoryRepository.findById(id);
         if (optional.isPresent()) {
             Category existingCategory = optional.get();
-            existingCategory.setDescription(category.getDescription());
+            existingCategory.setName(categoryDto.getName());
+            existingCategory.setDescription(categoryDto.getDescription());
             Category updatedCategory = this.categoryRepository.save(existingCategory);
             return new CategoryDto(updatedCategory);
         } else {
