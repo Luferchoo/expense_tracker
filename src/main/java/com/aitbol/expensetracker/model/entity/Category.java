@@ -1,8 +1,6 @@
 package com.aitbol.expensetracker.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -21,6 +19,7 @@ public class Category {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;

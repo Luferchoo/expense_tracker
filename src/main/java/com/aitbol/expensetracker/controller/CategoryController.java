@@ -30,8 +30,8 @@ public class CategoryController {
     }
 
     @PostMapping("categoryPost/")
-    public CategoryDto postCategory(@RequestBody Category category) {
-        return categoryService.post(category);
+    public CategoryDto postCategory(@RequestBody CategoryDto categoryDto) {
+        return categoryService.post(categoryDto);
     }
 
     @PutMapping("categoryUpdate/{id}")
