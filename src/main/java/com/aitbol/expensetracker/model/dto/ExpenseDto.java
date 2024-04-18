@@ -24,7 +24,7 @@ public class ExpenseDto {
         this.name = expense.getName();
         this.description = expense.getDescription();
         this.amount = expense.getAmount();
-        this.timestamp = expense.getDate();
+        this.timestamp = expense.getTimestamp();
     }
 
     @JsonProperty("name")
@@ -52,10 +52,10 @@ public class ExpenseDto {
     }
 
     @JsonProperty("timestamp")
-    public Date getDate() {
+    public Date getTimestamp() {
         return timestamp;
     }
-    public void setDate(Date timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 }

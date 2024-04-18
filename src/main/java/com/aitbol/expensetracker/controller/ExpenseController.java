@@ -28,8 +28,8 @@ public class ExpenseController {
     }
 
     @PostMapping("expensepost/")
-    public ExpenseDto postExpense(@RequestBody Expense expense) {
-        return expenseService.post(expense);
+    public ExpenseDto postExpense(@RequestBody ExpenseDto expenseDto) {
+        return expenseService.post(expenseDto);
     }
 
     @PutMapping("expenseupdate/{id}")

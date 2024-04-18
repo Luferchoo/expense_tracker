@@ -57,11 +57,11 @@ public class Expense {
         this.amount = amount;
     }
 
-    public Date getDate() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setDate(Date timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 

@@ -39,21 +39,29 @@ public class ExpenseService {
         return expenseDtos;
     }
 
-    public ExpenseDto post(Expense expense) {
-        if (expense.getDate() == null) {
-            expense.setDate(new Date());
+    public ExpenseDto post(ExpenseDto expenseDto) {
+        Expense expense = new Expense();
+        expense.setName(expenseDto.getName());
+        expense.setDescription(expenseDto.getDescription());
+        expense.setAmount(expenseDto.getAmount());
+        if (expenseDto.getTimestamp() == null) {
+            expense.setTimestamp(new Date());
+        } else {
+            expense.setTimestamp(expenseDto.getTimestamp());
         }
         Expense updatedExpense = this.expenseRepository.save(expense);
         return new ExpenseDto(updatedExpense);
     }
 
-    public ExpenseDto update(Long id, ExpenseDto expense) {
+
+    public ExpenseDto update(Long id, ExpenseDto expenseDto) {
         Optional<Expense> optional = this.expenseRepository.findById(id);
         if (optional.isPresent()) {
             Expense existingExpense = optional.get();
-            existingExpense.setName(expense.getName());
-            existingExpense.setDescription(expense.getDescription());
-            existingExpense.setAmount(expense.getAmount());
+            existingExpense.setName(expenseDto.getName());
+            existingExpense.setDescription(expenseDto.getDescription());
+            existingExpense.setAmount(expenseDto.getAmount());
+            existingExpense.setTimestamp(expenseDto.getTimestamp());
             Expense updatedExpense = this.expenseRepository.save(existingExpense);
             return new ExpenseDto(updatedExpense);
         } else {
