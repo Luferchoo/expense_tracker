@@ -3,42 +3,35 @@ package com.aitbol.expensetracker.service;
 import com.aitbol.expensetracker.model.dto.ExpenseDto;
 import com.aitbol.expensetracker.model.entity.Expense;
 import com.aitbol.expensetracker.repository.ExpenseRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
 import com.aitbol.expensetracker.model.entity.Category;
 import com.aitbol.expensetracker.model.dto.CategoryDto;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExpenseService {
-    private ExpenseRepository expenseRepository;
-    ExpenseService(ExpenseRepository expenseRepository){
+    private final ExpenseRepository expenseRepository;
+
+    @Autowired
+    public ExpenseService(ExpenseRepository expenseRepository) {
         this.expenseRepository = expenseRepository;
     }
 
-
-    public ExpenseDto findById(Long id){
-        Optional<Expense> optional = this.expenseRepository.findById(id);
-        if (optional.isPresent()) {
-            return new ExpenseDto(optional.get());
-        } else {
-            return null;
-        }
+    public ExpenseDto findById(Long id) {
+        Optional<Expense> optional = expenseRepository.findById(id);
+        return optional.map(ExpenseDto::new).orElse(null);
     }
-    public Collection<ExpenseDto> findAll(){
-        Collection<Expense> collection = this.expenseRepository.findAll();
-        Collection<ExpenseDto> expenseDtos = new ArrayList<>();
 
-        for (Expense expense : collection) {
-            expenseDtos.add(new ExpenseDto(expense));
-        }
-
+    public Collection<ExpenseDto> findAll() {
+        List<ExpenseDto> expenseDtos = new ArrayList<>();
+        expenseRepository.findAll().forEach(expense -> expenseDtos.add(new ExpenseDto(expense)));
         return expenseDtos;
     }
 
@@ -47,25 +40,20 @@ public class ExpenseService {
         expense.setName(expenseDto.getName());
         expense.setDescription(expenseDto.getDescription());
         expense.setAmount(expenseDto.getAmount());
-        if (expenseDto.getTimestamp() == null) {
-            expense.setTimestamp(new Date());
-        } else {
-            expense.setTimestamp(expenseDto.getTimestamp());
-        }
-        Expense updatedExpense = this.expenseRepository.save(expense);
-        return new ExpenseDto(updatedExpense);
+        expense.setTimestamp(expenseDto.getTimestamp() != null ? expenseDto.getTimestamp() : new Date());
+        Expense savedExpense = expenseRepository.save(expense);
+        return new ExpenseDto(savedExpense);
     }
 
-
     public ExpenseDto update(Long id, ExpenseDto expenseDto) {
-        Optional<Expense> optional = this.expenseRepository.findById(id);
+        Optional<Expense> optional = expenseRepository.findById(id);
         if (optional.isPresent()) {
             Expense existingExpense = optional.get();
             existingExpense.setName(expenseDto.getName());
             existingExpense.setDescription(expenseDto.getDescription());
             existingExpense.setAmount(expenseDto.getAmount());
             existingExpense.setTimestamp(expenseDto.getTimestamp());
-            Expense updatedExpense = this.expenseRepository.save(existingExpense);
+            Expense updatedExpense = expenseRepository.save(existingExpense);
             return new ExpenseDto(updatedExpense);
         } else {
             return null;
@@ -74,26 +62,30 @@ public class ExpenseService {
 
     @Transactional
     public ExpenseDto delete(Long id) {
-        Optional<Expense> optional = this.expenseRepository.findById(id);
+        Optional<Expense> optional = expenseRepository.findById(id);
         if (optional.isPresent()) {
             Expense deletedExpense = optional.get();
-            this.expenseRepository.deleteById(id);
+            // Desvincular el gasto de las categorías asociadas
+            unlinkCategoriesFromExpense(deletedExpense);
+            expenseRepository.deleteById(id);
             return new ExpenseDto(deletedExpense);
         } else {
             return null;
         }
     }
 
+    private void unlinkCategoriesFromExpense(Expense expense) {
+        // Obtener todas las categorías asociadas a este gasto
+        Collection<Category> categories = expense.getCategories();
+        // Desvincular el gasto de cada categoría asociada
+        categories.forEach(category -> category.getExpenses().remove(expense));
+    }
+
     public Collection<CategoryDto> getCategoryExpenses(Long expenseId) {
         Expense expense = expenseRepository.findById(expenseId).orElse(null);
         if (expense != null) {
-            Collection<Category> categories = expense.getCategories();
-            Collection<CategoryDto> categoryDtos = new ArrayList<>();
-
-            for (Category category : categories) {
-                categoryDtos.add(new CategoryDto(category));
-            }
-
+            List<CategoryDto> categoryDtos = new ArrayList<>();
+            expense.getCategories().forEach(category -> categoryDtos.add(new CategoryDto(category)));
             return categoryDtos;
         }
         return null;

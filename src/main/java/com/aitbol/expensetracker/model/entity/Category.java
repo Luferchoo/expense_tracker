@@ -55,6 +55,14 @@ public class Category {
         this.description = description;
     }
 
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

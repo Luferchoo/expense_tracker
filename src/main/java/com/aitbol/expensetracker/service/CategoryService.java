@@ -5,45 +5,35 @@ import com.aitbol.expensetracker.model.entity.Category;
 import com.aitbol.expensetracker.model.entity.Expense;
 import com.aitbol.expensetracker.repository.CategoryRepository;
 import com.aitbol.expensetracker.repository.ExpenseRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
-    private CategoryRepository categoryRepository;
-    private ExpenseRepository expenseRepository;
+
+    private final CategoryRepository categoryRepository;
+    private final ExpenseRepository expenseRepository;
 
     @Autowired
-    CategoryService(CategoryRepository categoryRepository, ExpenseRepository expenseRepository) {
+    public CategoryService(CategoryRepository categoryRepository, ExpenseRepository expenseRepository) {
         this.categoryRepository = categoryRepository;
         this.expenseRepository = expenseRepository;
     }
-    CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+
+    public CategoryDto findById(Long id) {
+        Optional<Category> optional = categoryRepository.findById(id);
+        return optional.map(CategoryDto::new).orElse(null);
     }
 
-    public CategoryDto findById(Long id){
-        Optional<Category> optional = this.categoryRepository.findById(id);
-        if (optional.isPresent()) {
-            return new CategoryDto(optional.get());
-        } else {
-            return null;
-        }
-    }
-
-    public Collection<CategoryDto> findAll(){
-        Collection<Category> collection = this.categoryRepository.findAll();
-        Collection<CategoryDto> categoryDtos = new ArrayList<>();
-
-        for (Category category : collection) {
-            categoryDtos.add(new CategoryDto(category));
-        }
-
+    public Collection<CategoryDto> findAll() {
+        List<CategoryDto> categoryDtos = new ArrayList<>();
+        categoryRepository.findAll().forEach(category -> categoryDtos.add(new CategoryDto(category)));
         return categoryDtos;
     }
 
@@ -51,17 +41,17 @@ public class CategoryService {
         Category category = new Category();
         category.setName(categoryDto.getName());
         category.setDescription(categoryDto.getDescription());
-        Category updatedCategory = this.categoryRepository.save(category);
-        return new CategoryDto(updatedCategory);
+        Category savedCategory = categoryRepository.save(category);
+        return new CategoryDto(savedCategory);
     }
 
     public CategoryDto update(Long id, CategoryDto categoryDto) {
-        Optional<Category> optional = this.categoryRepository.findById(id);
+        Optional<Category> optional = categoryRepository.findById(id);
         if (optional.isPresent()) {
             Category existingCategory = optional.get();
             existingCategory.setName(categoryDto.getName());
             existingCategory.setDescription(categoryDto.getDescription());
-            Category updatedCategory = this.categoryRepository.save(existingCategory);
+            Category updatedCategory = categoryRepository.save(existingCategory);
             return new CategoryDto(updatedCategory);
         } else {
             return null;
@@ -70,29 +60,32 @@ public class CategoryService {
 
     @Transactional
     public CategoryDto delete(Long id) {
-        Optional<Category> optional = this.categoryRepository.findById(id);
+        Optional<Category> optional = categoryRepository.findById(id);
         if (optional.isPresent()) {
             Category deletedCategory = optional.get();
-            this.categoryRepository.deleteById(id);
+            // Desvincular los gastos asociados a esta categoría
+            unlinkExpensesFromCategory(deletedCategory);
+            categoryRepository.deleteById(id);
             return new CategoryDto(deletedCategory);
         } else {
             return null;
         }
     }
 
+    private void unlinkExpensesFromCategory(Category category) {
+        // Obtener todos los gastos asociados a esta categoría
+        List<Expense> expenses = category.getExpenses();
+        // Desvincular la categoría de cada gasto asociado
+        expenses.forEach(expense -> expense.getCategories().remove(category));
+    }
+
     public Collection<CategoryDto> getCategoryExpenses(Long expenseId) {
         Expense expense = expenseRepository.findById(expenseId).orElse(null);
         if (expense != null) {
-            Collection<Category> categories = expense.getCategories();
-            Collection<CategoryDto> categoryDtos = new ArrayList<>();
-
-            for (Category category : categories) {
-                categoryDtos.add(new CategoryDto(category)); // Mapear cada entidad Category a su DTO correspondiente
-            }
-
+            List<CategoryDto> categoryDtos = new ArrayList<>();
+            expense.getCategories().forEach(category -> categoryDtos.add(new CategoryDto(category)));
             return categoryDtos;
         }
         return null;
     }
-
 }
