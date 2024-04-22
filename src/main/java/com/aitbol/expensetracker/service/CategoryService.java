@@ -2,8 +2,11 @@ package com.aitbol.expensetracker.service;
 
 import com.aitbol.expensetracker.model.dto.CategoryDto;
 import com.aitbol.expensetracker.model.entity.Category;
+import com.aitbol.expensetracker.model.entity.Expense;
 import com.aitbol.expensetracker.repository.CategoryRepository;
+import com.aitbol.expensetracker.repository.ExpenseRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,7 +16,13 @@ import java.util.Optional;
 @Service
 public class CategoryService {
     private CategoryRepository categoryRepository;
+    private ExpenseRepository expenseRepository;
 
+    @Autowired
+    CategoryService(CategoryRepository categoryRepository, ExpenseRepository expenseRepository) {
+        this.categoryRepository = categoryRepository;
+        this.expenseRepository = expenseRepository;
+    }
     CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
@@ -70,4 +79,20 @@ public class CategoryService {
             return null;
         }
     }
+
+    public Collection<CategoryDto> getCategoryExpenses(Long expenseId) {
+        Expense expense = expenseRepository.findById(expenseId).orElse(null);
+        if (expense != null) {
+            Collection<Category> categories = expense.getCategories();
+            Collection<CategoryDto> categoryDtos = new ArrayList<>();
+
+            for (Category category : categories) {
+                categoryDtos.add(new CategoryDto(category)); // Mapear cada entidad Category a su DTO correspondiente
+            }
+
+            return categoryDtos;
+        }
+        return null;
+    }
+
 }

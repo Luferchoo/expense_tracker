@@ -16,4 +16,6 @@ public interface ExpenseRepository extends CrudRepository<Expense,String> {
     Expense save(Expense expense);
 
     void deleteById(Long id);
+
+
 }

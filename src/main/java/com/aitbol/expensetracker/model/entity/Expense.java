@@ -3,7 +3,9 @@ import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +29,9 @@ public class Expense {
     private String description;
     private double amount;
     private Date timestamp;
+    @ManyToMany(mappedBy = "expenses")
+    private List<Category> categories;
+
 
     public Long getId() {
         return id;
@@ -64,6 +69,8 @@ public class Expense {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
+
+    public Collection<Category> getCategories() {return categories;}
 
     @Override
     public final boolean equals(Object o) {

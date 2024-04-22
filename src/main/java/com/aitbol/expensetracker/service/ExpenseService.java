@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import com.aitbol.expensetracker.model.entity.Category;
+import com.aitbol.expensetracker.model.dto.CategoryDto;
+
 
 @Service
 public class ExpenseService {
@@ -79,5 +82,20 @@ public class ExpenseService {
         } else {
             return null;
         }
+    }
+
+    public Collection<CategoryDto> getCategoryExpenses(Long expenseId) {
+        Expense expense = expenseRepository.findById(expenseId).orElse(null);
+        if (expense != null) {
+            Collection<Category> categories = expense.getCategories();
+            Collection<CategoryDto> categoryDtos = new ArrayList<>();
+
+            for (Category category : categories) {
+                categoryDtos.add(new CategoryDto(category));
+            }
+
+            return categoryDtos;
+        }
+        return null;
     }
 }

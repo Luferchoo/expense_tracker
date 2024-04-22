@@ -3,7 +3,9 @@ package com.aitbol.expensetracker.model.entity;
 import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.List;
 import java.util.Objects;
+
 
 @Entity
 @Table(name = "category", schema = "public")
@@ -23,6 +25,11 @@ public class Category {
     private Long id;
     private String name;
     private String description;
+    @ManyToMany
+    @JoinTable(name = "expense_category",
+            joinColumns = @JoinColumn(name = "catergory_id"),
+            inverseJoinColumns = @JoinColumn(name = "expense_id"))
+    private List<Expense> expenses;
 
     public Long getId() {
         return id;

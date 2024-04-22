@@ -43,4 +43,9 @@ public class CategoryController {
     public CategoryDto deleteExpense(@PathVariable Long id) {
         return categoryService.delete(id);
     }
+
+    @GetMapping("/{categoryId}/expenses")
+    public Collection<CategoryDto> getCategoryExpenses(@PathVariable Long categoryId) {
+        return categoryService.getCategoryExpenses(categoryId);
+    }
 }
