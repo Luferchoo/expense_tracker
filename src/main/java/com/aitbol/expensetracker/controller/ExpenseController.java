@@ -3,10 +3,14 @@ import com.aitbol.expensetracker.model.dto.ExpenseDto;
 import com.aitbol.expensetracker.model.entity.Expense;
 import com.aitbol.expensetracker.service.ExpenseService;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -42,5 +46,21 @@ public class ExpenseController {
         return expenseService.delete(id);
     }
 
+    @GetMapping("/expenses/inRangeAndCategories")
+    public Collection<ExpenseDto> getExpensesInRangeAndCategories(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+            @RequestParam("categoryIds") Long[] categoryIds) {
+            Collection<Long> categoryIdList = Arrays.stream(categoryIds)
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
+        return expenseService.getExpensesInRangeAndCategories(startDate, endDate, categoryIdList);
+    }
 
+    @GetMapping("/expenses/inRange")
+    public Collection<ExpenseDto> getExpensesInRange(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        return expenseService.getExpensesInRange(startDate, endDate);
+    }
 }

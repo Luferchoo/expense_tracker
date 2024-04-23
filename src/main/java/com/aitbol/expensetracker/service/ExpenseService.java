@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ExpenseService {
@@ -89,5 +90,22 @@ public class ExpenseService {
             return categoryDtos;
         }
         return null;
+    }
+    public Collection<ExpenseDto> getExpensesInRangeAndCategories(Date startDate, Date endDate, Collection<Long> categoryIds) {
+        // Filtrar los gastos dentro del rango de fechas y con las categorías especificadas
+        return expenseRepository.findAll().stream()
+                .filter(expense -> expense.getTimestamp().after(startDate) && expense.getTimestamp().before(endDate))
+                .filter(expense -> expense.getCategories().stream().anyMatch(category -> categoryIds.contains(category.getId())))
+                .map(ExpenseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // Método para obtener gastos dentro de un rango de fechas
+    public Collection<ExpenseDto> getExpensesInRange(Date startDate, Date endDate) {
+        // Filtrar los gastos dentro del rango de fechas
+        return expenseRepository.findAll().stream()
+                .filter(expense -> expense.getTimestamp().after(startDate) && expense.getTimestamp().before(endDate))
+                .map(ExpenseDto::new)
+                .collect(Collectors.toList());
     }
 }
